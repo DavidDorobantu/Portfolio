@@ -162,13 +162,25 @@ a {
   right: 0;
   z-index: 100;
   height: var(--nav-height);
-  transition: background 0.3s ease, box-shadow 0.3s ease, backdrop-filter 0.3s ease;
 }
 
-.navbar--scrolled {
+/* The blurred backdrop lives on a pseudo-element: backdrop-filter on .navbar
+   itself would make it the containing block of the fixed mobile menu. */
+.navbar::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
   background: rgba(12, 10, 10, 0.85);
   backdrop-filter: blur(12px);
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.35);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.navbar--scrolled::before {
+  opacity: 1;
 }
 
 .navbar__inner {
